@@ -15,7 +15,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration'
+    arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration Release'
 
 - task: ArchiveFiles@2
   inputs:
