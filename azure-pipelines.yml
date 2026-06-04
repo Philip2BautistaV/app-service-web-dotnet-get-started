@@ -20,11 +20,16 @@ steps:
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
-- task: DotNetCoreCLI@2
+- task: NuGetToolInstaller@1
+- task: NuGetCommand@2
   inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-    arguments: '--output $(Build.BinariesDirectory)/publish_output'
+    restoreSolution: '**/*.sln'
+- task: VSBuild@1
+  inputs:
+    solution: '**/*.sln'
+    vsVersion: 'latest'
+    platform: 'Any CPU'
+    configuration: 'Release'
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output'
