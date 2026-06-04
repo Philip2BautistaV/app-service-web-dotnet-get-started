@@ -11,10 +11,10 @@ pool:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Install .NET Core SDK 4.8'
+  displayName: 'Install .NET 8 SDK'
   inputs:
     packageType: 'sdk'
-    version: '4.8.x'
+    version: '8.0.x'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
