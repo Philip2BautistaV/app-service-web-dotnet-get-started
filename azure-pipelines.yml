@@ -10,11 +10,21 @@ pool:
   vmImage: windows-latest
 
 steps:
-   
+
+- task: NuGetToolInstaller@1
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '**/*.sln'
+- task: VSBuild@1
+  inputs:
+    solution: '**/*.sln'
+    vsVersion: 'latest'
+    configuration: 'Release'
+    platform: 'Any CPU'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
+    projects: '**/*.sln'
     arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration Release'
 
 - task: ArchiveFiles@2
