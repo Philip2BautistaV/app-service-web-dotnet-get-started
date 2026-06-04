@@ -14,7 +14,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.sln'
-    arguments: '--output $(Build.BinariesDirectory)/publish_output --configuration Release'
+    arguments: '--output $(Build.BinariesDirectory)/publish_output'
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)/publish_output'
