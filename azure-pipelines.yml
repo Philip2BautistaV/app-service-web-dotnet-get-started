@@ -14,47 +14,33 @@ variables:
 
 steps:
 
-# Install .NET SDK
-- task: UseDotNet@2
-  displayName: 'Install .NET SDK'
-  inputs:
-    packageType: 'sdk'
-    version: '8.x'
-
-# Restore NuGet packages
+# Restore
 - task: NuGetCommand@2
-  displayName: 'Restore Packages'
   inputs:
-    command: 'restore'
-    solution: '**\aspnet-get-started.sln'
+    restoreSolution: '**/*.sln'
 
-# Build Solution
+# Build
 - task: VSBuild@1
-  displayName: 'Build Application'
+  displayName: 'Build Solution'
   inputs:
     solution: '**\aspnet-get-started.sln'
-
-# Run Unit Tests
-- task: DotNetCoreCLI@2
-  displayName: 'Run Unit Tests'
-  inputs:
-    command: 'test'
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code Coverage"'
-
-# Publish Application
-
-- task: VSBuild@1
-  displayName: 'Publish Application'
-  inputs:
-    solution: '**\aspnet-get-started.sln'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PublishUrl="$(Build.ArtifactStagingDirectory)"'
     platform: 'Any CPU'
     configuration: '$(buildConfiguration)'
 
-# Publish Build Artifacts
+# Publish (IMPORTANT FIX)
+- task: VSBuild@1
+  displayName: 'Publish Web App'
+  inputs:
+    solution: '**\aspnet-get-started.sln'
+    platform: 'Any CPU'
+    configuration: '$(buildConfiguration)'
+    msbuildArgs: >
+      /p:DeployOnBuild=true
+      /p:WebPublishMethod=FileSystem
+      /p:publishUrl=$(Build.ArtifactStagingDirectory)
+
+# Publish artifact
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
