@@ -22,19 +22,17 @@ steps:
     version: '8.x'
 
 # Restore NuGet packages
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   displayName: 'Restore Packages'
   inputs:
     command: 'restore'
-    projects: '**\aspnet-get-started.csproj'
+    solution: '**\aspnet-get-started.sln'
 
 # Build Solution
-- task: DotNetCoreCLI@2
+- task: VSBuild@1
   displayName: 'Build Application'
   inputs:
-    command: 'build'
-    projects: '**\aspnet-get-started.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    solution: '**\aspnet-get-started.sln'
 
 # Run Unit Tests
 - task: DotNetCoreCLI@2
