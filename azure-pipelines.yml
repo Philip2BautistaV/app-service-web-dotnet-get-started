@@ -26,14 +26,14 @@ steps:
   displayName: 'Restore Packages'
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
+    projects: 'aspnet-get-started.csproj'
 
 # Build Solution
 - task: DotNetCoreCLI@2
   displayName: 'Build Application'
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
+    projects: 'aspnet-get-started.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
 # Run Unit Tests
