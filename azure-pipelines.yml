@@ -19,17 +19,9 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
-# Build
+# Build + Publish in ONE step (important)
 - task: VSBuild@1
-  displayName: 'Build Solution'
-  inputs:
-    solution: '**\aspnet-get-started.sln'
-    platform: 'Any CPU'
-    configuration: '$(buildConfiguration)'
-
-# Publish (IMPORTANT FIX)
-- task: VSBuild@1
-  displayName: 'Publish Web App'
+  displayName: 'Build and Publish'
   inputs:
     solution: '**\aspnet-get-started.sln'
     platform: 'Any CPU'
@@ -37,11 +29,15 @@ steps:
     msbuildArgs: >
       /p:DeployOnBuild=true
       /p:WebPublishMethod=FileSystem
-      /p:publishUrl=$(Build.ArtifactStagingDirectory)
+      /p:publishUrl=$(Build.ArtifactStagingDirectory)\
+      /p:OutDir=$(Build.ArtifactStagingDirectory)\
+
+# Verify output (debug step - optional but useful)
+- script: dir "$(Build.ArtifactStagingDirectory)"
+  displayName: 'Check publish output'
 
 # Publish artifact
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
-
