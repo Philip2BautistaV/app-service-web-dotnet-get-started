@@ -43,19 +43,19 @@ steps:
     arguments: '--configuration $(buildConfiguration) --collect "Code Coverage"'
 
 # Publish Application
-- task: DotNetCoreCLI@2
+
+- task: VSBuild@1
   displayName: 'Publish Application'
   inputs:
-    command: 'publish'
-    publishWebProjects: true
-    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish_output'
-    zipAfterPublish: true
+    solution: '**\aspnet-get-started.sln'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PublishUrl="$(Build.ArtifactStagingDirectory)"'
+    platform: 'Any CPU'
+    configuration: '$(buildConfiguration)'
 
 # Publish Build Artifacts
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Build Artifact'
+  displayName: 'Publish Artifacts'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
-    publishLocation: 'Container'
 
